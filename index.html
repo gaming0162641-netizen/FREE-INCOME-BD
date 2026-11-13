@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07182b"><title>FREE INCOME BD</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="toast" class="toast" aria-live="polite"></div>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-icon">৳</span><span>FREE INCOME BD<small>EARN • COMPLETE • REWARD</small></span></a>
+  <div class="top-actions"><span id="user-label" class="muted"></span><button id="logout-btn" class="btn btn-outline hidden">Logout</button></div>
+</header>
+<main class="container">
+  <section id="auth-view" class="auth-layout">
+    <div class="hero">
+      <span class="eyebrow">WELCOME TO YOUR REWARD SPACE</span>
+      <h1>ছোট ছোট কাজ,<br><em>পয়েন্ট জমাও।</em></h1>
+      <p>সহজ কাজ সম্পন্ন করে পয়েন্ট সংগ্রহ করো। এটি একটি পয়েন্ট-ভিত্তিক ডেমো প্ল্যাটফর্ম; বাস্তব আয়ের নিশ্চয়তা বা পেমেন্ট সেবা নয়।</p>
+      <div class="hero-pills"><span>✓ Secure login</span><span>✓ Task rewards</span><span>✓ Activity history</span></div>
+    </div>
+    <div class="panel auth-panel">
+      <div class="tabs"><button class="tab active" data-auth="login">Login</button><button class="tab" data-auth="signup">Create account</button></div>
+      <form id="auth-form">
+        <label id="name-wrap" class="hidden">নাম<input id="name" autocomplete="name" maxlength="50" placeholder="তোমার নাম"></label>
+        <label>Email<input id="email" type="email" required autocomplete="email" placeholder="name@example.com"></label>
+        <label>Password<input id="password" type="password" required minlength="6" autocomplete="current-password" placeholder="কমপক্ষে ৬ অক্ষর"></label>
+        <button class="btn btn-primary full" id="auth-submit">Login</button>
+      </form>
+      <p class="tiny muted">শুধু নিজের অ্যাকাউন্ট ব্যবহার করো। কখনো পাসওয়ার্ড কারও সঙ্গে শেয়ার করবে না।</p>
+    </div>
+  </section>
+
+  <section id="app-view" class="hidden">
+    <div class="welcome-row"><div><span class="eyebrow">YOUR WORKSPACE</span><h1>স্বাগতম, <span id="welcome-name">বন্ধু</span>!</h1><p class="muted">আজকের কাজ ও তোমার পয়েন্টের অবস্থা দেখো।</p></div><span class="status-pill">● Account active</span></div>
+    <div class="stats-grid">
+      <article class="stat-card"><span>Available points</span><strong id="balance">0</strong><small>পয়েন্ট</small></article>
+      <article class="stat-card"><span>Total earned</span><strong id="earned">0</strong><small>পয়েন্ট</small></article>
+      <article class="stat-card"><span>Completed tasks</span><strong id="completed-count">0</strong><small>টি কাজ</small></article>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" data-page="tasks">Tasks</button>
+      <button class="nav-btn" data-page="history">History</button>
+      <button class="nav-btn" data-page="withdraw">Withdraw request</button>
+      <button class="nav-btn" data-page="profile">Profile</button>
+      <button class="nav-btn hidden" id="admin-nav" data-page="admin">Admin</button>
+    </nav>
+    <section id="page-tasks" class="page">
+      <div class="section-head"><div><h2>Available tasks</h2><p class="muted">কাজ সম্পন্ন করে রিভিউয়ের জন্য জমা দাও।</p></div><button id="checkin-btn" class="btn btn-secondary">Daily check-in</button></div>
+      <div id="task-list" class="task-grid"><div class="empty">Loading tasks…</div></div>
+    </section>
+    <section id="page-history" class="page hidden"><h2>Transaction history</h2><div id="history-list" class="list-card"></div></section>
+    <section id="page-withdraw" class="page hidden">
+      <div class="notice"><b>Demo mode:</b> এখানে শুধু পয়েন্ট রিডিম/উইথড্র অনুরোধের ডেমো রেকর্ড তৈরি হবে। কোনো বাস্তব টাকা পাঠানো হবে না।</div>
+      <div class="panel form-panel"><h2>Request redemption</h2><form id="withdraw-form">
+        <label>পয়েন্ট<input id="withdraw-amount" type="number" min="1" step="1" required placeholder="যেমন 100"></label>
+        <label>পদ্ধতি<select id="withdraw-method"><option value="Demo">Demo request only</option></select></label>
+        <button class="btn btn-primary">Submit demo request</button>
+      </form></div><div id="withdraw-list" class="list-card"></div>
+    </section>
+    <section id="page-profile" class="page hidden"><div class="panel form-panel"><h2>My profile</h2><form id="profile-form"><label>নাম<input id="profile-name" maxlength="50" required></label><label>Email<input id="profile-email" disabled></label><button class="btn btn-primary">Save profile</button></form><p class="tiny muted">Account ID: <code id="uid-label"></code></p></div></section>
+    <section id="page-admin" class="page hidden">
+      <div class="notice warning">Admin access is controlled by Firebase custom claims. Firestore-এ নিজে role লিখে Admin হওয়া যাবে না।</div>
+      <div class="admin-grid">
+        <div class="panel form-panel"><h2>Create task</h2><form id="task-form"><label>Task title<input id="task-title" required maxlength="90"></label><label>Description<textarea id="task-desc" required maxlength="500"></textarea></label><label>Reward points<input id="task-reward" type="number" min="1" max="10000" required></label><button class="btn btn-primary">Publish task</button></form></div>
+        <div class="panel form-panel"><h2>Pending submissions</h2><div id="submission-list"></div></div>
+        <div class="panel form-panel"><h2>Withdraw requests</h2><div id="admin-withdraw-list"></div></div>
+      </div>
+    </section>
+  </section>
+  <footer>FREE INCOME BD · Demo reward platform · Use responsibly</footer>
+</main>
+<script type="module" src="app.js"></script>
+</body></html>

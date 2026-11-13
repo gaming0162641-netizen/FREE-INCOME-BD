@@ -1,0 +1,9 @@
+{
+  "name": "FREE INCOME BD",
+  "short_name": "FREE INCOME",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07182b",
+  "theme_color": "#07182b",
+  "icons": []
+}
