@@ -26,7 +26,7 @@
         <label>Email<input id="email" type="email" required autocomplete="email" placeholder="name@example.com"></label>
         <label>Password<input id="password" type="password" required minlength="6" autocomplete="current-password" placeholder="কমপক্ষে ৬ অক্ষর"></label>
         <button type="button" id="forgot-password" class="text-link">পাসওয়ার্ড ভুলে গেছো? Reset করো</button>
-        <button class="btn btn-primary full" id="auth-submit">Login</button>
+        <button type="submit" class="btn btn-primary full" id="auth-submit">Login</button>
       </form>
       <p class="tiny muted">শুধু নিজের অ্যাকাউন্ট ব্যবহার করো। কখনো পাসওয়ার্ড কারও সঙ্গে শেয়ার করবে না।</p>
     </div>
@@ -71,5 +71,15 @@
   </section>
   <footer>FREE INCOME BD · Demo reward platform · Use responsibly</footer>
 </main>
+<script>
+window.addEventListener('error', function(e) {
+  var t=document.getElementById('toast');
+  if(t){t.textContent='সাইটের স্ক্রিপ্টে সমস্যা হয়েছে। পেজ Reload করো; না হলে স্ক্রিনশট পাঠাও।';t.classList.add('show');}
+});
+window.addEventListener('unhandledrejection', function(e) {
+  var t=document.getElementById('toast');
+  if(t){t.textContent='Firebase সংযোগে সমস্যা: '+(e.reason && e.reason.message ? e.reason.message : 'আবার চেষ্টা করো।');t.classList.add('show');}
+});
+</script>
 <script type="module" src="app.js"></script>
 </body></html>
