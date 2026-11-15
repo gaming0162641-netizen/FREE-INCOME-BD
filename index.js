@@ -68,3 +68,30 @@ exports.reviewWithdrawal = onCall({ region: "asia-southeast1" }, async request =
   });
   return {status:"reviewed_demo_only"};
 });
+
+
+exports.ensureAccountId = onCall({ region: "asia-southeast1" }, async (request) => {
+  if (!request.auth) throw new HttpsError("unauthenticated", "Please login.");
+  const uid = request.auth.uid;
+  const email = request.auth.token.email || "";
+  const displayName = String((request.data || {}).displayName || "Member").slice(0, 50);
+  const userRef = db.doc(`users/${uid}`);
+  const counterRef = db.doc("systemCounters/accountIds");
+  return db.runTransaction(async (tx) => {
+    const userSnap = await tx.get(userRef);
+    if (userSnap.exists && Number.isInteger(userSnap.data().accountId)) {
+      return { accountId: userSnap.data().accountId };
+    }
+    const counterSnap = await tx.get(counterRef);
+    const nextId = (counterSnap.exists ? Number(counterSnap.data().lastId || 0) : 0) + 1;
+    tx.set(counterRef, { lastId: nextId }, { merge: true });
+    tx.set(userRef, {
+      uid, email,
+      displayName: userSnap.exists ? (userSnap.data().displayName || displayName) : displayName,
+      accountId: nextId,
+      createdAt: userSnap.exists ? (userSnap.data().createdAt || FieldValue.serverTimestamp()) : FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp()
+    }, { merge: true });
+    return { accountId: nextId };
+  });
+});
